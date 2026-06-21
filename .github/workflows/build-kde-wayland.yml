@@ -1,4 +1,4 @@
-name: 构建并更新 KDE Wayland 预编译包(anland)
+name: 构建并更新KDE Wayland预编译包(anland)
 
 on:
   workflow_dispatch:
