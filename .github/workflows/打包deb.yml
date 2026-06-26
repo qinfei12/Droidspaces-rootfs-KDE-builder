@@ -41,14 +41,13 @@ jobs:
           name: zip-artifact
           path: ${{ env.ZIP_FILE }}
 
-      # 2、自动创建GitHub Release发行版挂载压缩包
-      - name: 发布正式Release版本
+      # 2、自动创建GitHub Release草稿挂载压缩包
+      - name: 发布Release草稿
         uses: softprops/action-gh-release@v1
         with:
-           tag_name: ${{ env.BUILD_TAG }}
-           files: ${{ env.ZIP_FILE }}
-           draft: false
-           prerelease: false
-           generate_release_notes: true
+          files: ${{ env.ZIP_FILE }}
+          draft: true
+          prerelease: false
+          generate_release_notes: true
         env:
-           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
