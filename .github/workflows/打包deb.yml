@@ -45,10 +45,10 @@ jobs:
       - name: 发布正式Release版本
         uses: softprops/action-gh-release@v1
         with:
-          files: ${{ env.ZIP_FILE }}
-          draft: false
-          prerelease: false
-          generate_release_notes: true
+           tag_name: ${{ env.BUILD_TAG }}
+           files: ${{ env.ZIP_FILE }}
+           draft: false
+           prerelease: false
+           generate_release_notes: true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
