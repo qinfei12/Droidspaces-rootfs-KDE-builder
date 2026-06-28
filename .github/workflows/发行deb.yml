@@ -46,4 +46,4 @@ jobs:
         run: |
           gh release create --draft --generate-notes "${{ github.sha }}" "${{ env.ZIP_FILE }}"
           env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
