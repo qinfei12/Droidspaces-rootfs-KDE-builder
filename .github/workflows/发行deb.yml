@@ -1,0 +1,53 @@
+name: 打包deb
+on:
+  workflow_dispatch:
+    inputs:
+      target_folder_path:
+        description: 仓库内打包目录路径
+        required: true
+        default: 'anland-build/Debian13/kwin'
+        type: string
+      zip_filename:
+        description: 输出压缩包名称(自动附加日期)
+        required: false
+        default: 'Anland_Package'
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  package_and_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出仓库源码
+        uses: actions/checkout@v4
+
+      - name: 目录打包压缩
+        run: |
+          TARGET_PATH="${{ github.event.inputs.target_folder_path }}"
+          BASENAME="${{ github.event.inputs.zip_filename }}"
+          # 拼接年月日时间戳
+          TIMESTAMP=$(date +%Y%m%d)
+          OUTPUT_ZIP="${BASENAME}_${TIMESTAMP}.zip"
+          # 递归压缩，排除所有.git缓存目录
+          zip -r "${OUTPUT_ZIP}" "${TARGET_PATH}" -x "*/.git/*"
+          echo "ZIP_FILE=${OUTPUT_ZIP}" >> $GITHUB_ENV
+
+      # 1、上传为Workflow运行产物
+      - name: 保存流水线构建产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: zip-artifact
+          path: ${{ env.ZIP_FILE }}
+
+      # 2、自动创建GitHub Release草稿挂载压缩包
+      - name: 发布Release草稿
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{ env.ZIP_FILE }}
+          draft: true
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
