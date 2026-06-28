@@ -45,5 +45,5 @@ jobs:
       - name: 发布Release草稿（gh‑cli原生方式）
         run: |
           gh release create --draft --generate-notes "${{ github.sha }}" "${{ env.ZIP_FILE }}"
-          env:
+      env:
           GH_TOKEN: ${{ github.token }}
