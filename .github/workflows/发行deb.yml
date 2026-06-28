@@ -43,7 +43,7 @@ jobs:
 
       # 2、自动创建GitHub Release草稿挂载压缩包
       - name: 发布Release草稿（gh‑cli原生方式）
-  run: |
-    gh release create --draft --generate-notes "${{ github.sha }}" "${{ env.ZIP_FILE }}"
-  env:
-    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create --draft --generate-notes "${{ github.sha }}" "${{ env.ZIP_FILE }}"
+          env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
